@@ -1,0 +1,54 @@
+:root {
+  --primary-dark: #573425;
+  --primary-gold: #7d7000;
+  --bg-soft: #fff6ea;
+  --accent-beige: #c2b19c;
+  --white: #ffffff;
+  --black: #000000;
+}
+
+.top-banner {
+    background: #000;
+    color: #fff;
+    font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.marquee {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll 18s linear infinite;
+}
+
+.marquee span {
+    margin: 0 50px;
+}
+
+@keyframes scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+
+body {
+    background-color: #fafafa;
+}
+.navbar-brand {
+    font-weight: bold;
+    color: #d86c7f !important;
+}
+.btn-primary {
+    background-color: #d86c7f;
+    border-color: #d86c7f;
+}
+.btn-primary:hover {
+    background-color: #c45b6e;
+    border-color: #c45b6e;
+}
+
+/* Classes utilitaires personnalisées */
+.bg-primary-dark { background-color: var(--primary-dark); }
+.text-primary-gold { color: var(--primary-gold); }
+.bg-soft { background-color: var(--bg-soft); }
+.bg-beige { background-color: var(--accent-beige); }

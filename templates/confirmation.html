@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container text-center my-5">
+    <h1 class="display-4">Merci pour votre commande !</h1>
+    <p class="lead">Votre commande a bien été enregistrée. Vous serez livré dans les plus brefs délais.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Retour à l'accueil</a>
+</div>
+{% endblock %}

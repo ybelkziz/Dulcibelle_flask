@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Sérum visage anti-tâches</h1>
+            <p class="lead">Révélez l'éclat de votre peau...</p>
+            <!-- etc. -->
+            <p class="h3">Prix : {{ produit.prix }} DH</p>
+            <a href="{{ url_for('commander_page') }}" class="btn btn-primary btn-lg">Commander maintenant</a>
+        </div>
+        <div class="col-md-6">
+            <img src="https://via.placeholder.com/400x400?text=Sérum" class="img-fluid rounded" alt="Sérum visage">
+        </div>
+    </div>
+</div>
+{% endblock %}

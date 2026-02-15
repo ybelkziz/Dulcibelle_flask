@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Détail de la commande n°{{ commande.numero }}</h2>
+    <dl class="row">
+        <dt class="col-sm-3">Nom</dt>
+        <dd class="col-sm-9">{{ commande.prenom }} {{ commande.nom }}</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">{{ commande.email }}</dd>
+
+        <dt class="col-sm-3">Téléphone</dt>
+        <dd class="col-sm-9">{{ commande.telephone }}</dd>
+
+        <dt class="col-sm-3">Adresse</dt>
+        <dd class="col-sm-9">{{ commande.adresse }}</dd>
+
+        <dt class="col-sm-3">Quantité</dt>
+        <dd class="col-sm-9">{{ commande.quantite }}</dd>
+
+        <dt class="col-sm-3">Date</dt>
+        <dd class="col-sm-9">{{ commande.date_commande.strftime('%d/%m/%Y %H:%M') }}</dd>
+
+        <dt class="col-sm-3">Statut actuel</dt>
+        <dd class="col-sm-9">{{ commande.statut }}</dd>
+    </dl>
+
+    <h3>Changer le statut</h3>
+    <form method="POST" action="{{ url_for('admin_changer_statut', id=commande.id) }}">
+        <div class="mb-3">
+            <select name="statut" class="form-select">
+                <option value="en attente" {% if commande.statut == 'en attente' %}selected{% endif %}>En attente</option>
+                <option value="expédiée" {% if commande.statut == 'expédiée' %}selected{% endif %}>Expédiée</option>
+                <option value="annulée" {% if commande.statut == 'annulée' %}selected{% endif %}>Annulée</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    </form>
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3">Retour au tableau de bord</a>
+</div>
+{% endblock %}

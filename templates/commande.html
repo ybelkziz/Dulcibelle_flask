@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h1 class="display-4">Sérum visage anti-tâches</h1>
+            <p class="lead">Révélez l'éclat de votre peau avec notre sérum concentré en actifs naturels.</p>
+            <ul class="list-unstyled">
+                <li>✓ Réduit les tâches brunes</li>
+                <li>✓ Unifie le teint</li>
+                <li>✓ Hydratation intense</li>
+            </ul>
+            <p class="h3">Prix : 429 DH</p>
+        </div>
+        <div class="col-md-6">
+            <!-- Image du produit (à remplacer par votre propre image) -->
+            <img src="https://via.placeholder.com/400x400?text=Sérum" class="img-fluid rounded" alt="Sérum visage">
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="text-center mb-4">Commander maintenant</h2>
+            <form method="POST" action="{{ url_for('commander') }}">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="prenom" name="prenom" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="adresse" class="form-label">Adresse complète</label>
+                    <textarea class="form-control" id="adresse" name="adresse" rows="2" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="telephone" class="form-label">Téléphone</label>
+                    <input type="tel" class="form-control" id="telephone" name="telephone" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="quantite" class="form-label">Quantité</label>
+                    <input type="number" class="form-control" id="quantite" name="quantite" value="1" min="1" max="10">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100">Passer la commande</button>
+                <p class="text-muted mt-2 small">Paiement à la livraison (COD)</p>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

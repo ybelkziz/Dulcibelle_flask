@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Administration - Commandes</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>N°</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Téléphone</th>
+            <th>Quantité</th>
+            <th>Statut</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for cmd in commandes.items %}
+        <tr>
+            <td>{{ cmd.id }}</td>
+            <td>{{ cmd.date_commande.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td>{{ cmd.prenom }} {{ cmd.nom }}</td>
+            <td>{{ cmd.telephone }}</td>
+            <td>{{ cmd.quantite }}</td>
+            <td>{{ cmd.statut }}</td>
+            <td><a href="{{ url_for('admin_commande_detail', id=cmd.id) }}" class="btn btn-sm btn-info">Voir</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<!-- Pagination -->
+<nav>
+    <ul class="pagination">
+        {% if commandes.has_prev %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('admin_dashboard', page=commandes.prev_num) }}">Précédent</a></li>
+        {% endif %}
+        {% if commandes.has_next %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('admin_dashboard', page=commandes.next_num) }}">Suivant</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}
