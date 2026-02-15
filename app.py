@@ -5,6 +5,10 @@ from functools import wraps
 from flask_mail import Mail, Message
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+# Charger les variables d'environnement depuis .env
+load_dotenv()
 
 # Création de l'application Flask
 app = Flask(__name__)
@@ -12,14 +16,14 @@ app = Flask(__name__)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'ybelkziz@gmail.com'
-app.config['MAIL_PASSWORD'] = 'Youssef-91'  # Ne commitez jamais ce mot de passe !
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')  # Ne commitez jamais ce mot de passe !
 app.config['MAIL_DEFAULT_SENDER'] = 'ybelkziz@gmail.com'
 
 mail = Mail(app)
 
 # Clé secrète pour les sessions (indispensable)
-app.secret_key = 'une_chaine_aleatoire_tres_longue_a_changer'
+app.secret_key = os.getenv('SECRET_KEY')
 
 # Configuration de la base de données SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///commandes.db'
