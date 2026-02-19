@@ -21,6 +21,10 @@ class Produit(db.Model):
     nom = db.Column(db.String(100), nullable=False, default="Sérum visage anti-tâches")
     prix = db.Column(db.Float, nullable=False, default=429)
     stock = db.Column(db.Integer, nullable=False, default=100)  # Stock initial
+    description = db.Column(db.Text, nullable=True)
+    image = db.Column(db.String(200), nullable=True)  # chemin relatif (ex: 'images/serum.jpg')
+    ingredients = db.Column(db.Text, nullable=True)
+    utilisation = db.Column(db.Text, nullable=True)
 
 class Admin(db.Model):
     id = db.Column(db.Integer, primary_key=True)

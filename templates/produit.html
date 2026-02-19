@@ -2,15 +2,25 @@
 {% block content %}
 <div class="container my-5">
     <div class="row">
-        <div class="col-md-6">
-            <h1>Sérum visage anti-tâches</h1>
-            <p class="lead">Révélez l'éclat de votre peau...</p>
-            <!-- etc. -->
-            <p class="h3">Prix : {{ produit.prix }} DH</p>
-            <a href="{{ url_for('commander_page') }}" class="btn btn-primary btn-lg">Commander maintenant</a>
+        <!-- Colonne image -->
+        <div class="col-md-6 mb-4">
+            {% if produit.image %}
+                <img src="{{ url_for('static', filename=produit.image) }}" class="img-fluid rounded shadow" alt="{{ produit.nom }}">
+            {% else %}
+                <img src="https://via.placeholder.com/600x600?text=Sérum" class="img-fluid rounded" alt="Sérum">
+            {% endif %}
         </div>
+        <!-- Colonne informations -->
         <div class="col-md-6">
-            <img src="https://via.placeholder.com/400x400?text=Sérum" class="img-fluid rounded" alt="Sérum visage">
+            <h1 class="display-5 fw-bold">{{ produit.nom }}</h1>
+            <p class="lead">{{ produit.description }}</p>
+            <h2 class="h3 text-primary">{{ produit.prix }} DH</h2>
+            <a href="{{ url_for('commander_page') }}" class="btn btn-primary btn-lg px-5 py-3 mt-3">Commander maintenant</a>
+            <hr class="my-4">
+            <h3 class="h4">Ingrédients</h3>
+            <p>{{ produit.ingredients }}</p>
+            <h3 class="h4">Conseils d'utilisation</h3>
+            <p>{{ produit.utilisation }}</p>
         </div>
     </div>
 </div>

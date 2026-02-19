@@ -1,0 +1,15 @@
+# Environnements virtuels
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Base de données
+*.db
+instance/
+
+# Secrets
+.env
+

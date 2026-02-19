@@ -13,12 +13,14 @@ load_dotenv()
 # Création de l'application Flask
 app = Flask(__name__)
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
+# Configuration du serveur de messagerie (depuis .env)
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 465))
+app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL', 'True').lower() == 'true'
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS', 'False').lower() == 'true'
 app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')  # Ne commitez jamais ce mot de passe !
-app.config['MAIL_DEFAULT_SENDER'] = 'ybelkziz@gmail.com'
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')
 
 mail = Mail(app)
 
@@ -40,14 +42,14 @@ from models import Commande, Admin, Produit
 @app.route('/')
 def index():
     produit = Produit.query.first()
-    return render_template('landing.html', produit=produit)
+    return render_template('landing.html', produit=produit, active_page='index')
 
 # Route pour traiter la commande
 
 @app.route('/produit')
 def produit():
     produit = Produit.query.first()
-    return render_template('produit.html', produit=produit)
+    return render_template('produit.html', produit=produit, active_page='produit')
 
 @app.route('/commander')
 def commander_page():
@@ -130,7 +132,7 @@ def send_confirmation_email(commande):
         Détails :\n
         - Produit : Sérum visage anti-tâches\n
         - Quantité : {commande.quantite}\n
-        - Montant : {commande.quantite * 29.90} €\n
+        - Montant : {commande.quantite * 429} DH\n
         - Adresse de livraison : {commande.adresse}\n
         - Téléphone : {commande.telephone}\n
         Paiement à la livraison.\n
@@ -143,9 +145,13 @@ def send_confirmation_email(commande):
 
 def send_notification_admin(commande):
     try:
+        admin_email = os.getenv('ADMIN_EMAIL')
+        if not admin_email:
+            app.logger.error("ADMIN_EMAIL non défini dans les variables d'environnement")
+            return
         msg = Message(
             subject=f"Nouvelle commande n°{commande.id} - Dulcibelle",
-            recipients=['admin@dulcibelle.ma']   # Remplacez par votre email
+            recipients=[admin_email]
         )
         msg.body = f"""
         Nouvelle commande reçue :\n
@@ -162,6 +168,14 @@ def send_notification_admin(commande):
 @app.route('/confirmation')
 def confirmation():
     return render_template('confirmation.html')
+
+@app.route('/histoire')
+def histoire():
+    return render_template('histoire.html', active_page='histoire')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html', active_page='contact')
 
 # Routes pour les pages légales
 @app.route('/mentions-legales')
@@ -246,6 +260,19 @@ def debug_templates():
         return f"Fichiers dans templates : {files}"
     else:
         return "Le dossier templates n'existe pas !"
+
+@app.route('/debug-mail-config')
+def debug_mail_config():
+    config = {
+        'MAIL_SERVER': app.config.get('MAIL_SERVER'),
+        'MAIL_PORT': app.config.get('MAIL_PORT'),
+        'MAIL_USE_SSL': app.config.get('MAIL_USE_SSL'),
+        'MAIL_USE_TLS': app.config.get('MAIL_USE_TLS'),
+        'MAIL_USERNAME': app.config.get('MAIL_USERNAME'),
+        'MAIL_DEFAULT_SENDER': app.config.get('MAIL_DEFAULT_SENDER'),
+    }
+    return str(config)
+
 # Lancement de l'application
 if __name__ == '__main__':
     with app.app_context():
