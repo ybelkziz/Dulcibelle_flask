@@ -38,13 +38,24 @@ body {
     font-weight: bold;
     color: #d86c7f !important;
 }
+
+/* Pour les cartes d'ingrédients et avantages */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.1) !important;
+}
+
+/* Pour les badges et boutons */
 .btn-primary {
-    background-color: #d86c7f;
-    border-color: #d86c7f;
+    background-color: var(--primary-dark) !important;
+    border: none;
+    transition: background-color 0.3s ease;
 }
 .btn-primary:hover {
-    background-color: #c45b6e;
-    border-color: #c45b6e;
+    background-color: #6b3f2f !important; /* Version plus foncée */
 }
 
 /* Style de la navigation */
@@ -54,6 +65,34 @@ body {
 }
 .navbar-nav .nav-link:hover {
     color: var(--primary-gold) !important;
+}
+
+/* Pour l'image principale */
+.product-main-image {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product-main-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 2rem 3rem rgba(0,0,0,0.15) !important;
+}
+
+@keyframes highlight {
+    0% {
+        background-color: rgba(215, 108, 127, 0.2);
+        transform: scale(1);
+    }
+    50% {
+        background-color: rgba(215, 108, 127, 0.5);
+        transform: scale(1.05);
+    }
+    100% {
+        background-color: transparent;
+        transform: scale(1);
+    }
+}
+
+.total-highlight {
+    animation: highlight 0.3s ease;
 }
 
 /* Classes utilitaires personnalisées */

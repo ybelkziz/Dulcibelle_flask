@@ -53,7 +53,8 @@ def produit():
 
 @app.route('/commander')
 def commander_page():
-    return render_template('commande.html')
+    produit = Produit.query.first()
+    return render_template('commande.html', produit=produit)
 
 @app.route('/commander', methods=['POST'])
 def commander():
@@ -120,28 +121,23 @@ def commander():
     # Redirection vers la page de confirmation
     return redirect(url_for('confirmation'))
 
+
 def send_confirmation_email(commande):
     try:
+        # Générer les versions HTML et texte à partir des templates
+        html_body = render_template('emails/confirmation_email.html', commande=commande)
+        text_body = render_template('emails/confirmation_email.txt', commande=commande)
+
         msg = Message(
             subject=f"Confirmation de commande n°{commande.id} - Dulcibelle",
-            recipients=[commande.email]   # Il faudrait ajouter un champ email dans le formulaire !
+            recipients=[commande.email],
+            html=html_body,
+            body=text_body
         )
-        msg.body = f"""
-        Bonjour {commande.prenom},\n
-        Nous avons bien reçu votre commande n°{commande.id}.\n
-        Détails :\n
-        - Produit : Sérum visage anti-tâches\n
-        - Quantité : {commande.quantite}\n
-        - Montant : {commande.quantite * 429} DH\n
-        - Adresse de livraison : {commande.adresse}\n
-        - Téléphone : {commande.telephone}\n
-        Paiement à la livraison.\n
-        Merci pour votre confiance !
-        """
         mail.send(msg)
+        app.logger.info(f"Email de confirmation envoyé à {commande.email}")
     except Exception as e:
-        # Enregistrer l'erreur dans les logs mais ne pas interrompre le processus
-        app.logger.error(f"Erreur envoi email : {e}")
+        app.logger.error(f"Erreur envoi email confirmation : {e}")
 
 def send_notification_admin(commande):
     try:

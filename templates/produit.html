@@ -1,27 +1,319 @@
 {% extends "base.html" %}
+
 {% block content %}
 <div class="container my-5">
-    <div class="row">
-        <!-- Colonne image -->
-        <div class="col-md-6 mb-4">
-            {% if produit.image %}
-                <img src="{{ url_for('static', filename=produit.image) }}" class="img-fluid rounded shadow" alt="{{ produit.nom }}">
-            {% else %}
-                <img src="https://via.placeholder.com/600x600?text=Sérum" class="img-fluid rounded" alt="Sérum">
-            {% endif %}
+    <!-- Section 1: Hero produit avec mise en page premium -->
+    <div class="row g-5 align-items-center">
+        <!-- Colonne image avec effet de zoom au survol -->
+        <div class="col-lg-6">
+            <div class="product-image-wrapper position-relative">
+                {% if produit.image %}
+                    <img src="{{ url_for('static', filename=produit.image) }}"
+                         class="img-fluid rounded-4 shadow-lg product-main-image"
+                         alt="{{ produit.nom }}"
+                         loading="lazy"
+                         style="transition: transform 0.3s ease;">
+                {% else %}
+                    <img src="https://via.placeholder.com/600x600?text=Sérum"
+                         class="img-fluid rounded-4 shadow-lg" alt="Sérum">
+                {% endif %}
+            </div>
         </div>
-        <!-- Colonne informations -->
-        <div class="col-md-6">
-            <h1 class="display-5 fw-bold">{{ produit.nom }}</h1>
-            <p class="lead">{{ produit.description }}</p>
-            <h2 class="h3 text-primary">{{ produit.prix }} DH</h2>
-            <a href="{{ url_for('commander_page') }}" class="btn btn-primary btn-lg px-5 py-3 mt-3">Commander maintenant</a>
-            <hr class="my-4">
-            <h3 class="h4">Ingrédients</h3>
-            <p>{{ produit.ingredients }}</p>
-            <h3 class="h4">Conseils d'utilisation</h3>
-            <p>{{ produit.utilisation }}</p>
+
+        <!-- Colonne informations avec mise en valeur -->
+        <div class="col-lg-6">
+            <!-- Badge "Nouveauté" ou "Meilleure vente" (optionnel) -->
+            <span class="badge bg-primary-dark text-white mb-3 px-3 py-2">⭐ Nouvelle formule concentrée</span>
+
+            <h1 class="display-4 fw-bold mb-3" style="color: var(--primary-dark);">{{ produit.nom }}</h1>
+
+            <!-- Note et avis -->
+            <div class="d-flex align-items-center mb-3">
+                <div class="text-warning fs-5 me-2">★★★★★</div>
+                <span class="text-muted">(127 avis vérifiés)</span>
+            </div>
+
+            <!-- Prix avec mise en avant -->
+            <div class="pricing mb-4">
+                <span class="text-muted text-decoration-line-through fs-3 me-3">599 DH</span>
+                <span class="display-4 fw-bold" style="color: var(--primary-gold);">{{ produit.prix }} DH</span>
+                <span class="badge bg-success ms-3 px-3 py-2 fs-6">Économisez 170 DH</span>
+            </div>
+
+            <!-- Description courte (les premières lignes) -->
+            <p class="lead mb-4">{{ produit.description|truncate(150) }}</p>
+
+            <!-- Caractéristiques rapides avec icônes -->
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-droplet fs-4 me-2" style="color: var(--primary-gold);"></i>
+                    <span>98% naturel</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-heart fs-4 me-2" style="color: var(--primary-gold);"></i>
+                    <span>Testé dermatologiquement</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-truck fs-4 me-2" style="color: var(--primary-gold);"></i>
+                    <span>Livraison gratuite</span>
+                </div>
+            </div>
+
+            <!-- Bouton CTA principal -->
+            <a href="{{ url_for('commander_page') }}"
+               class="btn btn-primary btn-lg px-5 py-3 mb-3 w-100 w-md-auto"
+               style="background-color: var(--primary-dark); border: none;">
+                <i class="bi bi-cart-check me-2"></i> Commander maintenant
+            </a>
+
+            <!-- Paiement sécurisé -->
+            <p class="text-muted small">
+                <i class="bi bi-shield-check me-1"></i> Paiement sécurisé à la livraison
+            </p>
         </div>
     </div>
+
+    <!-- Section 2: Description détaillée et ingrédients (2 colonnes) -->
+    <div class="row g-5 my-5 py-5">
+        <div class="col-lg-6">
+            <h2 class="fw-bold mb-4" style="color: var(--primary-dark);">Description</h2>
+            <div class="description-text" style="line-height: 1.8;">
+                {{ produit.description }}
+            </div>
+
+            <!-- Conseils d'utilisation avec icônes -->
+            <h3 class="h4 fw-bold mt-5 mb-3">✨ Conseils d'utilisation</h3>
+            <div class="d-flex mb-3">
+                <span class="rounded-circle bg-soft d-flex align-items-center justify-content-center me-3"
+                      style="width: 40px; height: 40px; color: var(--primary-gold); font-weight: bold;">1</span>
+                <div>
+                    <p class="mb-0">Matin et soir sur peau propre et sèche</p>
+                </div>
+            </div>
+            <div class="d-flex mb-3">
+                <span class="rounded-circle bg-soft d-flex align-items-center justify-content-center me-3"
+                      style="width: 40px; height: 40px; color: var(--primary-gold); font-weight: bold;">2</span>
+                <div>
+                    <p class="mb-0">2-3 gouttes suffisent pour tout le visage</p>
+                </div>
+            </div>
+            <div class="d-flex mb-3">
+                <span class="rounded-circle bg-soft d-flex align-items-center justify-content-center me-3"
+                      style="width: 40px; height: 40px; color: var(--primary-gold); font-weight: bold;">3</span>
+                <div>
+                    <p class="mb-0">Masser délicatement jusqu'à pénétration</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ingrédients avec mise en forme élégante -->
+        <div class="col-lg-6">
+            <h2 class="fw-bold mb-4" style="color: var(--primary-dark);">Ingrédients clés</h2>
+
+            <!-- Liste des ingrédients formatée -->
+            <div class="ingredients-list p-4 rounded-4" style="background-color: var(--bg-soft);">
+                {% for ingredient in produit.ingredients.split('\n') %}
+                    {% if ingredient.strip() %}
+                        <div class="d-flex mb-3">
+                            <i class="bi bi-check-circle-fill me-3" style="color: var(--primary-gold);"></i>
+                            <span>{{ ingredient.replace('•', '').strip() }}</span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Appel à l'action secondaire -->
+            <div class="mt-5 text-center">
+                <p class="mb-3">Convient à tous les types de peau, même sensibles</p>
+                <a href="{{ url_for('commander_page') }}" class="btn btn-outline-dark px-4 py-2">
+                    Commander maintenant
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Galerie d'images (si vous avez plusieurs photos) -->
+    <section class="my-5 py-5 bg-light rounded-4">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5" style="color: var(--primary-dark);">Voir le produit en détail</h2>
+            <div class="row g-4">
+                <div class="col-4">
+                    <img src="{{ url_for('static', filename='images/hero1.png') }}"
+                         class="img-fluid rounded-3 shadow-sm"
+                         alt="Détail 1"
+                         loading="lazy">
+                </div>
+                <div class="col-4">
+                    <img src="{{ url_for('static', filename='images/hero2.png') }}"
+                         class="img-fluid rounded-3 shadow-sm"
+                         alt="Détail 2"
+                         loading="lazy">
+                </div>
+                <div class="col-4">
+                    <img src="{{ url_for('static', filename='images/step2.jpg') }}"
+                         class="img-fluid rounded-3 shadow-sm"
+                         alt="Texture du sérum"
+                         loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Pourquoi nous choisir ? (3 cartes) -->
+    <section class="my-5 py-5">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5" style="color: var(--primary-dark);">Pourquoi choisir Dulcibelle ?</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card border-0 text-center p-4 h-100 shadow-sm">
+                        <div class="rounded-circle bg-soft mx-auto d-flex align-items-center justify-content-center mb-4"
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-flower1 fs-1" style="color: var(--primary-gold);"></i>
+                        </div>
+                        <h3 class="h5 fw-bold">Ingrédients naturels</h3>
+                        <p class="text-muted">98% d'ingrédients d'origine naturelle, sans compromis sur l'efficacité.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 text-center p-4 h-100 shadow-sm">
+                        <div class="rounded-circle bg-soft mx-auto d-flex align-items-center justify-content-center mb-4"
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-heart fs-1" style="color: var(--primary-gold);"></i>
+                        </div>
+                        <h3 class="h5 fw-bold">Made in Morocco</h3>
+                        <p class="text-muted">Formulé et fabriqué au Maroc avec un savoir-faire artisanal.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 text-center p-4 h-100 shadow-sm">
+                        <div class="rounded-circle bg-soft mx-auto d-flex align-items-center justify-content-center mb-4"
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-shield-check fs-1" style="color: var(--primary-gold);"></i>
+                        </div>
+                        <h3 class="h5 fw-bold">Satisfait ou remboursé</h3>
+                        <p class="text-muted">14 jours pour changer d'avis, sans question.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Avis clients (slider amélioré) -->
+    <section class="my-5 py-5" style="background-color: var(--bg-soft); border-radius: 2rem;">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5" style="color: var(--primary-dark);">Ce qu'elles pensent de nous</h2>
+            <div id="productTestimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="card border-0 p-5 text-center shadow">
+                                    <img src="{{ url_for('static', filename='images/testimonial1.jpg') }}"
+                                         class="rounded-circle mx-auto mb-4"
+                                         style="width: 100px; height: 100px; object-fit: cover;"
+                                         alt="Client">
+                                    <div class="text-warning fs-4 mb-3">★★★★★</div>
+                                    <p class="fs-5 fst-italic">"Après 3 semaines, mes taches ont vraiment diminué. Je recommande vivement !"</p>
+                                    <h5 class="mt-4">- Sophie M.</h5>
+                                    <span class="text-muted">Achat vérifié</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ajoutez d'autres slides de témoignages -->
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#productTestimonialCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+                    <span class="visually-hidden">Précédent</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productTestimonialCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+                    <span class="visually-hidden">Suivant</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: FAQ produit -->
+    <section class="my-5 py-5">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5" style="color: var(--primary-dark);">Questions fréquentes</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion" id="productFaqAccordion">
+                        <div class="accordion-item border-0 mb-3 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button bg-soft" type="button" data-bs-toggle="collapse" data-bs-target="#faqProduct1">
+                                    Le sérum convient-il aux peaux sensibles ?
+                                </button>
+                            </h2>
+                            <div id="faqProduct1" class="accordion-collapse collapse show" data-bs-parent="#productFaqAccordion">
+                                <div class="accordion-body">
+                                    Oui, il a été testé dermatologiquement sur peaux sensibles et ne contient pas d'alcool ni de parfum irritant.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 mb-3 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-soft" type="button" data-bs-toggle="collapse" data-bs-target="#faqProduct2">
+                                    Combien de temps dure un flacon ?
+                                </button>
+                            </h2>
+                            <div id="faqProduct2" class="accordion-collapse collapse" data-bs-parent="#productFaqAccordion">
+                                <div class="accordion-body">
+                                    Environ 2 mois en utilisation quotidienne matin et soir.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 mb-3 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-soft" type="button" data-bs-toggle="collapse" data-bs-target="#faqProduct3">
+                                    Peut-on l'utiliser enceinte ?
+                                </button>
+                            </h2>
+                            <div id="faqProduct3" class="accordion-collapse collapse" data-bs-parent="#productFaqAccordion">
+                                <div class="accordion-body">
+                                    Nous recommandons de consulter votre médecin avant utilisation pendant la grossesse.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Appel à l'action final -->
+    <section class="my-5 text-center">
+        <div class="p-5 rounded-5" style="background: linear-gradient(135deg, var(--primary-dark) 0%, #8B5E3C 100%);">
+            <h2 class="display-5 fw-bold text-white mb-4">Prêt(e) à révéler l'éclat de votre peau ?</h2>
+            <p class="lead text-white mb-4">Rejoignez des milliers de femmes qui ont déjà adopté notre sérum.</p>
+            <a href="{{ url_for('commander_page') }}" class="btn btn-light btn-lg px-5 py-3">
+                <i class="bi bi-cart-check me-2"></i> Commander maintenant
+            </a>
+        </div>
+    </section>
 </div>
+
+<!-- Style CSS additionnel pour cette page -->
+<style>
+    .product-main-image {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-main-image:hover {
+        transform: scale(1.02);
+        box-shadow: 0 2rem 3rem rgba(0,0,0,0.15) !important;
+    }
+    .ingredients-list {
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    .accordion-button:not(.collapsed) {
+        background-color: var(--bg-soft);
+        color: var(--primary-dark);
+    }
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: rgba(0,0,0,0.125);
+    }
+</style>
 {% endblock %}

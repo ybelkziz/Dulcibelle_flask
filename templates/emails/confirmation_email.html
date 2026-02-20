@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de commande</title>
+    <style>
+        /* Styles généraux (certains clients email les ignorent, mais on les met quand même) */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: #f9f5f0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .header {
+            background-color: #573425;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .content h2 {
+            color: #573425;
+            font-size: 22px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .details {
+            background-color: #fff6ea;
+            border-left: 4px solid #7d7000;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .details p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+        .details strong {
+            color: #573425;
+        }
+        .footer {
+            background-color: #f0eae3;
+            padding: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: #7d7000;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #7d7000;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #5f5500;
+        }
+        .small {
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body style="margin:0; padding:20px; background-color:#f9f5f0; font-family: 'Poppins', Arial, sans-serif;">
+    <div class="container" style="max-width:600px; margin:0 auto; background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+        <div class="header" style="background-color:#573425; padding:30px 20px; text-align:center;">
+            <h1 style="color:#ffffff; margin:0; font-size:28px; font-weight:600; letter-spacing:1px;">Dulcibelle</h1>
+        </div>
+        <div class="content" style="padding:40px 30px;">
+            <h2 style="color:#573425; font-size:22px; margin-bottom:20px; font-weight:600;">Merci pour votre commande !</h2>
+            <p style="margin-bottom:20px; font-size:16px;">Bonjour <strong>{{ commande.prenom }} {{ commande.nom }}</strong>,</p>
+            <p style="margin-bottom:20px; font-size:16px;">Nous avons bien reçu votre commande et nous vous remercions pour votre confiance. Vous trouverez ci-dessous le récapitulatif :</p>
+
+            <div class="details" style="background-color:#fff6ea; border-left:4px solid #7d7000; padding:20px; margin:20px 0; border-radius:8px;">
+                <p style="margin:8px 0; font-size:16px;"><strong>Numéro de commande :</strong> {{ commande.numero }}</p>
+                <p style="margin:8px 0; font-size:16px;"><strong>Produit :</strong> Sérum visage anti-tâches</p>
+                <p style="margin:8px 0; font-size:16px;"><strong>Quantité :</strong> {{ commande.quantite }}</p>
+                <p style="margin:8px 0; font-size:16px;"><strong>Montant total :</strong> {{ commande.quantite * 429 }} DH</p>
+                <p style="margin:8px 0; font-size:16px;"><strong>Adresse de livraison :</strong> {{ commande.adresse }}</p>
+                <p style="margin:8px 0; font-size:16px;"><strong>Téléphone :</strong> {{ commande.telephone }}</p>
+            </div>
+
+            <p style="margin:20px 0; font-size:16px;">Votre commande sera expédiée sous 24h ouvrées et vous recevrez un email de confirmation d'expédition.</p>
+            <p style="margin:20px 0; font-size:16px;">Paiement à la livraison (COD).</p>
+
+            <a href="https://dulcibelle.ma" class="btn" style="display:inline-block; background-color:#7d7000; color:#ffffff; text-decoration:none; padding:12px 30px; border-radius:50px; font-weight:500; margin-top:20px;">Visiter notre site</a>
+        </div>
+        <div class="footer" style="background-color:#f0eae3; padding:25px; text-align:center; font-size:14px; color:#7d7000;">
+            <p style="margin:5px 0;">Dulcibelle – Drâa-Tafilalet, Maroc</p>
+            <p style="margin:5px 0;">contact@dulcibelle.ma | +212 6 60 02 08 88</p>
+            <p class="small" style="font-size:12px; color:#999; margin:15px 0 0;">Cet email a été envoyé automatiquement, merci de ne pas y répondre.</p>
+        </div>
+    </div>
+</body>
+</html>

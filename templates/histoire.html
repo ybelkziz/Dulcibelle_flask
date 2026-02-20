@@ -1,8 +1,144 @@
 {% extends "base.html" %}
+
 {% block content %}
-<div class="container my-5">
-    <h1>Notre histoire</h1>
-    <p>Dulcibelle est née d'une passion pour les soins naturels et le bien-être. Fondée en 2025, notre marque marocaine s'engage à offrir des produits cosmétiques de haute qualité, respectueux de votre peau et de l'environnement.</p>
-    <p>Notre sérum anti-tâches est le fruit de mois de recherche pour combiner l'efficacité des actifs naturels avec le savoir-faire artisanal.</p>
-</div>
+<!-- Hero Section plein écran -->
+<section class="hero-histoire d-flex align-items-center justify-content-center text-center" style="height: 100vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('{{ url_for('static', filename='images/histoire-hero.jpg') }}') center/cover no-repeat fixed;">
+    <div class="container" data-aos="fade-up" data-aos-duration="1500">
+        <h1 class="display-2 fw-bold text-white" style="font-family: 'Playfair Display', serif; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">Dulcibelle</h1>
+        <p class="lead text-white fs-3" style="font-family: 'Poppins', sans-serif; max-width: 800px; margin: 0 auto;">La force protectrice de la nature, sublimée par l’exigence scientifique</p>
+    </div>
+    <div class="scroll-indicator position-absolute bottom-0 start-50 translate-middle-x mb-4">
+        <a href="#naissance" class="text-white"><i class="bi bi-chevron-down fs-1"></i></a>
+    </div>
+</section>
+
+<!-- Section Naissance -->
+<section id="naissance" class="py-5" style="background-color: #f9f5f0;">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1200">
+                <h2 class="display-4 fw-bold mb-4" style="color: #573425; font-family: 'Playfair Display', serif;">Au cœur de Drâa-Tafilalet</h2>
+                <p class="fs-5" style="font-family: 'Poppins', sans-serif; line-height: 1.8; color: #4a4a4a;">
+                    Dulcibelle est née dans un territoire lumineux, authentique et préservé. Ici, la nature intacte nous a inspiré un soin qui protège, corrige et révèle l’éclat naturel de la peau.
+                </p>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1200">
+                <img src="{{ url_for('static', filename='images/histoire-paysage.jpg') }}" alt="Paysage Drâa-Tafilalet" class="img-fluid rounded-4 shadow-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Propolis -->
+<section class="py-5" style="background-color: #e8e0d5;">
+    <div class="container">
+        <div class="row align-items-center min-vh-100 flex-lg-row-reverse">
+            <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1200">
+                <h2 class="display-4 fw-bold mb-4" style="color: #7d7000; font-family: 'Playfair Display', serif;">L’ingrédient signature : la propolis</h2>
+                <p class="fs-5" style="font-family: 'Poppins', sans-serif; line-height: 1.8; color: #4a4a4a;">
+                    Véritable bouclier naturel de la ruche, la propolis incarne la résilience, la pureté et la puissance naturelle. Nous l’avons choisie pour ses propriétés protectrices et régénérantes, et nous l’avons associée à des actifs dermo-cosmétiques pour créer une synergie entre science et nature.
+                </p>
+            </div>
+            <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1200">
+                <img src="{{ url_for('static', filename='images/histoire-propolis.jpg') }}" alt="Propolis" class="img-fluid rounded-4 shadow-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Normes européennes -->
+<section class="py-5" style="background-color: #f9f5f0;">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12" data-aos="fade-up" data-aos-duration="1000">
+                <h2 class="display-5 fw-bold" style="color: #573425; font-family: 'Playfair Display', serif;">Une formulation conforme aux standards européens</h2>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+                <div class="card border-0 bg-transparent text-center">
+                    <i class="bi bi-file-earmark-text fs-1" style="color: #7d7000;"></i>
+                    <h3 class="h5 mt-3">Règlement (CE) n°1223/2009</h3>
+                    <p class="text-muted">Conformité aux normes cosmétiques européennes</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+                <div class="card border-0 bg-transparent text-center">
+                    <i class="bi bi-building fs-1" style="color: #7d7000;"></i>
+                    <h3 class="h5 mt-3">BPF – ISO 22716</h3>
+                    <p class="text-muted">Bonnes Pratiques de Fabrication</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+                <div class="card border-0 bg-transparent text-center">
+                    <i class="bi bi-shield-check fs-1" style="color: #7d7000;"></i>
+                    <h3 class="h5 mt-3">Qualité et sécurité</h3>
+                    <p class="text-muted">Standards internationaux stricts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Résultats -->
+<section class="py-5" style="background: linear-gradient(135deg, #fff6ea 0%, #e8e0d5 100%);">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up" data-aos-duration="1200">
+                <h2 class="display-5 fw-bold mb-4" style="color: #573425; font-family: 'Playfair Display', serif;">Des résultats visibles</h2>
+                <div class="row g-3">
+                    <div class="col-4">
+                        <span class="fs-1">✨</span>
+                        <p class="mt-2 fw-semibold">Teint plus lumineux</p>
+                    </div>
+                    <div class="col-4">
+                        <span class="fs-1">🌸</span>
+                        <p class="mt-2 fw-semibold">Peau uniforme</p>
+                    </div>
+                    <div class="col-4">
+                        <span class="fs-1">🌿</span>
+                        <p class="mt-2 fw-semibold">Taches atténuées</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Philosophie -->
+<section class="py-5" style="background-color: #573425;">
+    <div class="container text-center text-white">
+        <div class="row justify-content-center min-vh-50 align-items-center">
+            <div class="col-lg-8" data-aos="fade-up" data-aos-duration="1500">
+                <p class="fs-3 fst-italic mb-4" style="font-family: 'Playfair Display', serif;">« La nature inspire.<br>La science perfectionne.<br>L’exigence distingue. »</p>
+                <h3 class="fs-1 fw-bold">Dulcibelle</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Ajout de la police Playfair Display pour le serif -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<!-- Styles additionnels pour la page -->
+<style>
+    .hero-histoire {
+        position: relative;
+        overflow: hidden;
+    }
+    .scroll-indicator {
+        animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+        40% {transform: translateY(-20px) translateX(-50%);}
+        60% {transform: translateY(-10px) translateX(-50%);}
+    }
+    .card {
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
 {% endblock %}

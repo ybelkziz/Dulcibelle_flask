@@ -2,62 +2,155 @@
 
 {% block content %}
 <div class="container my-5">
-    <div class="row align-items-center">
-        <div class="col-md-6">
-            <h1 class="display-4">Sérum visage anti-tâches</h1>
-            <p class="lead">Révélez l'éclat de votre peau avec notre sérum concentré en actifs naturels.</p>
-            <ul class="list-unstyled">
-                <li>✓ Réduit les tâches brunes</li>
-                <li>✓ Unifie le teint</li>
-                <li>✓ Hydratation intense</li>
-            </ul>
-            <p class="h3">Prix : 429 DH</p>
-        </div>
-        <div class="col-md-6">
-            <!-- Image du produit (à remplacer par votre propre image) -->
-            <img src="https://via.placeholder.com/400x400?text=Sérum" class="img-fluid rounded" alt="Sérum visage">
-        </div>
-    </div>
+    <div class="row g-5">
+        <!-- Colonne gauche : Récapitulatif de la commande -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm p-4">
+                <h2 class="fw-bold mb-4" style="color: var(--primary-dark);">Votre commande</h2>
 
-    <hr class="my-5">
-
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h2 class="text-center mb-4">Commander maintenant</h2>
-            <form method="POST" action="{{ url_for('commander') }}">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="nom" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="nom" name="nom" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="prenom" class="form-label">Prénom</label>
-                        <input type="text" class="form-control" id="prenom" name="prenom" required>
+                <!-- Informations produit -->
+                <div class="d-flex align-items-center mb-4">
+                    {% if produit.image %}
+                        <img src="{{ url_for('static', filename=produit.image) }}"
+                             alt="{{ produit.nom }}"
+                             class="rounded-3 me-3"
+                             style="width: 80px; height: 80px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-light rounded-3 me-3 d-flex align-items-center justify-content-center"
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-box fs-1 text-muted"></i>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <h5 class="fw-bold mb-1">{{ produit.nom }}</h5>
+                        <p class="text-muted mb-0">Prix unitaire : <span class="fw-bold" style="color: var(--primary-gold);">{{ produit.prix }} DH</span></p>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="adresse" class="form-label">Adresse complète</label>
-                    <textarea class="form-control" id="adresse" name="adresse" rows="2" required></textarea>
+
+                <!-- Sélecteur de quantité avec boutons + et - -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Quantité</label>
+                    <div class="input-group" style="max-width: 150px;">
+                        <button class="btn btn-outline-secondary" type="button" id="btn-minus">−</button>
+                        <input type="number" class="form-control text-center" id="quantite-input" name="quantite" value="1" min="1" max="10" readonly style="background-color: white;">
+                        <button class="btn btn-outline-secondary" type="button" id="btn-plus">+</button>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="telephone" class="form-label">Téléphone</label>
-                    <input type="tel" class="form-control" id="telephone" name="telephone" required>
+
+                <!-- Total dynamique -->
+                <div class="d-flex justify-content-between align-items-center bg-soft p-3 rounded-3 mb-4">
+                    <span class="fw-semibold">Total (TTC) :</span>
+                    <span class="fs-3 fw-bold" style="color: var(--primary-gold);" id="total-affichage">{{ produit.prix }} DH</span>
                 </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+
+                <!-- Livraison gratuite mise en avant -->
+                <div class="alert" style="background-color: var(--bg-soft); border-left: 4px solid var(--primary-gold);">
+                    <i class="bi bi-truck fs-5 me-2" style="color: var(--primary-gold);"></i>
+                    <strong>Livraison gratuite</strong> partout au Maroc
                 </div>
-                <div class="mb-3">
-                    <label for="quantite" class="form-label">Quantité</label>
-                    <input type="number" class="form-control" id="quantite" name="quantite" value="1" min="1" max="10">
-                </div>
-                <button type="submit" class="btn btn-primary btn-lg w-100">Passer la commande</button>
-                <p class="text-muted mt-2 small">Paiement à la livraison (COD)</p>
-            </form>
+
+                <!-- Petits plus de réassurance -->
+                <p class="text-muted small mb-0">
+                    <i class="bi bi-shield-check me-1"></i> Paiement à la livraison (COD)
+                </p>
+            </div>
+        </div>
+
+        <!-- Colonne droite : Formulaire de commande -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm p-4">
+                <h2 class="fw-bold mb-4" style="color: var(--primary-dark);">Informations de livraison</h2>
+
+                <form method="POST" action="{{ url_for('commander') }}" id="commande-form">
+                    <!-- Champ caché pour la quantité (sera mis à jour par JS) -->
+                    <input type="hidden" name="quantite" id="quantite-hidden" value="1">
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nom" class="form-label">Nom</label>
+                            <input type="text" class="form-control" id="nom" name="nom" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="prenom" class="form-label">Prénom</label>
+                            <input type="text" class="form-control" id="prenom" name="prenom" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="adresse" class="form-label">Adresse complète</label>
+                        <textarea class="form-control" id="adresse" name="adresse" rows="2" required></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="telephone" class="form-label">Téléphone</label>
+                            <input type="tel" class="form-control" id="telephone" name="telephone" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                    </div>
+
+                    <!-- Bouton de soumission -->
+                    <button type="submit" class="btn btn-primary w-100 py-3 mt-3" style="background-color: var(--primary-dark); border: none;">
+                        <i class="bi bi-check-circle me-2"></i> Confirmer la commande
+                    </button>
+
+                    <p class="text-center text-muted small mt-3">
+                        En validant, vous acceptez nos <a href="{{ url_for('cgv') }}" class="text-decoration-none">conditions générales de vente</a>.
+                    </p>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- JavaScript pour la gestion de la quantité et du total -->
+<script>
+    (function() {
+        const prixUnitaire = {{ produit.prix }};
+        const inputQuantite = document.getElementById('quantite-input');
+        const hiddenQuantite = document.getElementById('quantite-hidden');
+        const totalSpan = document.getElementById('total-affichage');
+        const btnPlus = document.getElementById('btn-plus');
+        const btnMinus = document.getElementById('btn-minus');
 
+        function mettreAJourTotal() {
+            const qty = parseInt(inputQuantite.value) || 1;
+            const total = prixUnitaire * qty;
+            totalSpan.textContent = total + ' DH';
+            hiddenQuantite.value = qty;
 
+            // Ajoute la classe d'animation
+            totalSpan.classList.add('total-highlight');
+            // Retire la classe après la durée de l'animation (300 ms)
+            setTimeout(() => {
+                totalSpan.classList.remove('total-highlight');
+            }, 300);
+        }
+
+        btnPlus.addEventListener('click', function() {
+            let qty = parseInt(inputQuantite.value) || 1;
+            if (qty < 10) {
+                inputQuantite.value = qty + 1;
+                mettreAJourTotal();
+            }
+        });
+
+        btnMinus.addEventListener('click', function() {
+            let qty = parseInt(inputQuantite.value) || 1;
+            if (qty > 1) {
+                inputQuantite.value = qty - 1;
+                mettreAJourTotal();
+            }
+        });
+
+        // Synchronisation au cas où l'utilisateur tape directement (lecture seule, mais par sécurité)
+        inputQuantite.addEventListener('input', mettreAJourTotal);
+
+        // Initialisation
+        mettreAJourTotal();
+    })();
+</script>
 {% endblock %}

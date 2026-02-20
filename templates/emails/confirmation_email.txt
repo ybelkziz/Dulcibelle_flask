@@ -1,0 +1,19 @@
+Merci pour votre commande !
+
+Bonjour {{ commande.prenom }} {{ commande.nom }},
+
+Nous avons bien reçu votre commande. Voici le récapitulatif :
+
+Numéro de commande : {{ commande.numero }}
+Produit : Sérum visage anti-tâches
+Quantité : {{ commande.quantite }}
+Montant total : {{ commande.quantite * 429 }} DH
+Adresse de livraison : {{ commande.adresse }}
+Téléphone : {{ commande.telephone }}
+
+Votre commande sera expédiée sous 24h ouvrées. Paiement à la livraison (COD).
+
+Merci pour votre confiance !
+
+L'équipe Dulcibelle
+https://dulcibelle.ma
