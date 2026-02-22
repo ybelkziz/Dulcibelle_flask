@@ -15,6 +15,16 @@
     white-space: nowrap;
 }
 
+.step-circle {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.step-circle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+.bg-white { background-color: #ffffff; }
+
 .marquee {
     display: inline-block;
     padding-left: 100%;
@@ -30,6 +40,10 @@
     100% { transform: translateX(-100%); }
 }
 
+.hero-section {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
 
 body {
     background-color: #fafafa;
@@ -37,6 +51,17 @@ body {
 .navbar-brand {
     font-weight: bold;
     color: #d86c7f !important;
+}
+
+.navbar .btn-outline-light {
+    border-width: 2px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.navbar .btn-outline-light:hover {
+    background-color: var(--primary-gold);
+    border-color: var(--primary-gold);
+    color: #000;
 }
 
 /* Pour les cartes d'ingrédients et avantages */
@@ -93,6 +118,44 @@ body {
 
 .total-highlight {
     animation: highlight 0.3s ease;
+}
+
+/* Animations au scroll */
+[data-animate] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+[data-animate].animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+[data-delay="200"].animated {
+    transition-delay: 0.2s;
+}
+
+/* Effet hover sur le bouton */
+.btn-outline-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    background-color: #7d7000;
+    border-color: #7d7000;
+    color: #fff;
+}
+
+/* Ombre douce sur l'image */
+.shadow-lg {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
+}
+
+/* Animation flottante très subtile */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+.floating-image {
+    animation: float 6s ease-in-out infinite;
 }
 
 /* Classes utilitaires personnalisées */

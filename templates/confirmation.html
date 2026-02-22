@@ -1,9 +1,75 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container text-center my-5">
-    <h1 class="display-4">Merci pour votre commande !</h1>
-    <p class="lead">Votre commande a bien été enregistrée. Vous serez livré dans les plus brefs délais.</p>
-    <a href="{{ url_for('index') }}" class="btn btn-primary">Retour à l'accueil</a>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg p-5 text-center">
+                <div class="mb-4">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                </div>
+                <h1 class="display-4 fw-bold mb-3" style="color: var(--primary-dark);">Merci pour votre commande !</h1>
+                <p class="lead mb-4">Votre commande a bien été enregistrée.</p>
+
+                <div class="bg-soft p-4 rounded-4 mb-4">
+                    <h3 class="h5 text-muted mb-2">Numéro de commande</h3>
+                    <p class="fs-2 fw-bold" style="color: var(--primary-gold);">{{ commande.numero }}</p>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="p-3 border rounded-3">
+                            <i class="bi bi-box fs-3" style="color: var(--primary-gold);"></i>
+                            <h4 class="h6 mt-2">Produit</h4>
+                            <p class="small">Sérum visage anti-tâches</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 border rounded-3">
+                            <!-- Remplacer bi-123 par bi-cart ou bi-box -->
+                            <i class="bi bi-cart fs-3" style="color: var(--primary-gold);"></i>
+                            <h4 class="h6 mt-2">Quantité</h4>
+                            <p class="small">{{ commande.quantite }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-light border-0 bg-light text-start p-4 mb-4">
+                    <h5 class="fw-bold mb-3">Récapitulatif</h5>
+                    <p class="mb-2"><strong>Nom :</strong> {{ commande.prenom }} {{ commande.nom }}</p>
+                    <p class="mb-2"><strong>Email :</strong> {{ commande.email }}</p>
+                    <p class="mb-2"><strong>Téléphone :</strong> {{ commande.telephone }}</p>
+                    <p class="mb-2"><strong>Adresse :</strong> {{ commande.adresse }}</p>
+                    <p class="mb-2"><strong>Total :</strong> {{ commande.quantite * 429 }} DH</p>
+                    <p class="mb-2"><strong>Statut :</strong> <span class="badge bg-warning">{{ commande.statut }}</span></p>
+                </div>
+
+                <p class="mb-4">Vous recevrez un email de confirmation à l'adresse <strong>{{ commande.email }}</strong>.</p>
+
+                <hr class="my-4">
+
+                <h4 class="h5 mb-3">Suivez-nous sur les réseaux</h4>
+                <div class="d-flex justify-content-center gap-3 mb-4">
+                    <a href="#" class="btn btn-outline-dark rounded-circle p-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-facebook fs-5"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-dark rounded-circle p-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-instagram fs-5"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-dark rounded-circle p-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-pinterest fs-5"></i>
+                    </a>
+                    <a href="https://wa.me/+212660020888?text=Bonjour%20j'ai%20une%20question%20sur%20ma%20commande%20{{ commande.numero }}"
+                       class="btn btn-outline-success rounded-circle p-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-whatsapp fs-5"></i>
+                    </a>
+                </div>
+
+                <a href="{{ url_for('index') }}" class="btn btn-primary px-5 py-3 mt-3">
+                    <i class="bi bi-house me-2"></i> Retour à l'accueil
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

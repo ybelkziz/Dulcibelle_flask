@@ -62,6 +62,7 @@
                 <h2 class="fw-bold mb-4" style="color: var(--primary-dark);">Informations de livraison</h2>
 
                 <form method="POST" action="{{ url_for('commander') }}" id="commande-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <!-- Champ caché pour la quantité (sera mis à jour par JS) -->
                     <input type="hidden" name="quantite" id="quantite-hidden" value="1">
 
@@ -69,26 +70,31 @@
                         <div class="col-md-6 mb-3">
                             <label for="nom" class="form-label">Nom</label>
                             <input type="text" class="form-control" id="nom" name="nom" required>
+                            <div class="invalid-feedback" id="error-nom"></div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="prenom" class="form-label">Prénom</label>
                             <input type="text" class="form-control" id="prenom" name="prenom" required>
+                            <div class="invalid-feedback" id="error-prenom"></div>
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label for="adresse" class="form-label">Adresse complète</label>
                         <textarea class="form-control" id="adresse" name="adresse" rows="2" required></textarea>
+                        <div class="invalid-feedback" id="error-adresse">Adresse trop courte.</div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="telephone" class="form-label">Téléphone</label>
                             <input type="tel" class="form-control" id="telephone" name="telephone" required>
+                            <div class="invalid-feedback" id="error-telephone"></div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="invalid-feedback" id="error-email"></div>
                         </div>
                     </div>
 
@@ -152,5 +158,105 @@
         // Initialisation
         mettreAJourTotal();
     })();
+</script>
+
+<script>
+(function() {
+    const form = document.getElementById('commande-form');
+    const nomInput = document.getElementById('nom');
+    const prenomInput = document.getElementById('prenom');
+    const emailInput = document.getElementById('email');
+    const telephoneInput = document.getElementById('telephone');
+    const adresseInput = document.getElementById('adresse');
+    const quantiteInput = document.getElementById('quantite-input');
+
+    // Fonction pour afficher un message d'erreur sur un champ
+    function showError(input, message) {
+        input.classList.add('is-invalid');
+        const errorDiv = document.getElementById('error-' + input.id);
+        if (errorDiv) {
+            errorDiv.textContent = message;
+        }
+    }
+
+    // Fonction pour enlever l'erreur d'un champ
+    function clearError(input) {
+        input.classList.remove('is-invalid');
+        const errorDiv = document.getElementById('error-' + input.id);
+        if (errorDiv) {
+            errorDiv.textContent = '';
+        }
+    }
+
+    // Validation d'un email simple (présence de @ et d'un point après)
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // Validation du téléphone (au moins 10 chiffres)
+    function isValidTelephone(phone) {
+        return /^\d{10,}$/.test(phone.replace(/\s/g, ''));
+    }
+
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+
+        // Réinitialiser les erreurs
+        [nomInput, prenomInput, emailInput, telephoneInput, adresseInput].forEach(clearError);
+
+        // Validation nom
+        if (!nomInput.value.trim()) {
+            showError(nomInput, 'Le nom est obligatoire.');
+            isValid = false;
+        }
+
+        // Validation prénom
+        if (!prenomInput.value.trim()) {
+            showError(prenomInput, 'Le prénom est obligatoire.');
+            isValid = false;
+        }
+
+        // Validation email
+        const email = emailInput.value.trim();
+        if (!email) {
+            showError(emailInput, 'L\'email est obligatoire.');
+            isValid = false;
+        } else if (!isValidEmail(email)) {
+            showError(emailInput, 'Veuillez saisir un email valide (ex: nom@domaine.com).');
+            isValid = false;
+        }
+
+        // Validation téléphone
+        const telephone = telephoneInput.value.trim();
+        if (!telephone) {
+            showError(telephoneInput, 'Le téléphone est obligatoire.');
+            isValid = false;
+        } else if (!isValidTelephone(telephone)) {
+            showError(telephoneInput, 'Le téléphone doit contenir au moins 10 chiffres.');
+            isValid = false;
+        }
+
+        // Validation adresse
+        const adresse = adresseInput.value.trim();
+        if (!adresse) {
+            showError(adresseInput, 'L\'adresse est obligatoire.');
+            isValid = false;
+        } else if (adresse.length < 10) {
+            showError(adresseInput, 'L\'adresse doit faire au moins 10 caractères.');
+            isValid = false;
+        }
+
+        // Validation quantité (optionnelle car déjà gérée par les boutons, mais on peut vérifier)
+        const qty = parseInt(quantiteInput.value);
+        if (isNaN(qty) || qty < 1 || qty > 10) {
+            alert('Quantité invalide.');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+})();
 </script>
 {% endblock %}

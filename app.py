@@ -1,17 +1,53 @@
 from flask import Flask, render_template, request, redirect, url_for
 from extensions import db   # <-- import depuis extensions
 from flask import session, flash
+from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 from flask_mail import Mail, Message
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+from flask_talisman import Talisman
 
 # Charger les variables d'environnement depuis .env
 load_dotenv()
 
 # Création de l'application Flask
 app = Flask(__name__)
+
+csp = {
+    'default-src': [
+        '\'self\'',
+    ],
+    'script-src': [
+        '\'self\'',
+        '\'unsafe-inline\'',      # autorise les scripts inline (comme vos <script>)
+        'https://cdn.jsdelivr.net',
+        'https://unpkg.com',
+    ],
+    'style-src': [
+        '\'self\'',
+        '\'unsafe-inline\'',      # autorise les styles inline (vos style="...")
+        'https://cdn.jsdelivr.net',
+        'https://fonts.googleapis.com',
+        'https://unpkg.com',
+    ],
+    'font-src': [
+        '\'self\'',
+        'https://cdn.jsdelivr.net',
+        'https://fonts.gstatic.com',
+    ],
+    'img-src': [
+        '\'self\'',
+        'data:',
+        'https://via.placeholder.com',
+    ],
+    'connect-src': [
+        '\'self\'',
+    ],
+}
+
+Talisman(app, content_security_policy=csp, force_https=False)
 
 # Configuration du serveur de messagerie (depuis .env)
 app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
@@ -22,10 +58,15 @@ app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')
 
+
 mail = Mail(app)
 
 # Clé secrète pour les sessions (indispensable)
 app.secret_key = os.getenv('SECRET_KEY')
+
+app.config['WTF_CSRF_ENABLED'] = True
+app.config['WTF_CSRF_SECRET_KEY'] = app.secret_key  # optionnel, utilise la même clé
+csrf = CSRFProtect(app)
 
 # Configuration de la base de données SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///commandes.db'
@@ -119,7 +160,7 @@ def commander():
 
     flash('Commande enregistrée avec succès !', 'success')
     # Redirection vers la page de confirmation
-    return redirect(url_for('confirmation'))
+    return redirect(url_for('confirmation', commande_id=nouvelle_commande.id))
 
 
 def send_confirmation_email(commande):
@@ -161,9 +202,10 @@ def send_notification_admin(commande):
         app.logger.error(f"Erreur envoi email admin : {e}")
 
 # Route de confirmation
-@app.route('/confirmation')
-def confirmation():
-    return render_template('confirmation.html')
+@app.route('/confirmation/<int:commande_id>')
+def confirmation(commande_id):
+    commande = Commande.query.get_or_404(commande_id)
+    return render_template('confirmation.html', commande=commande)
 
 @app.route('/histoire')
 def histoire():
@@ -180,7 +222,11 @@ def mentions():
 
 @app.route('/cgv')
 def cgv():
-    return render_template('cgv.html')
+    return render_template('cgv.html', active_page='cgv')
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html', active_page='faq')
 
 
 # Décorateur pour protéger les routes admin
@@ -269,6 +315,11 @@ def debug_mail_config():
     }
     return str(config)
 
+@app.errorhandler(400)
+def csrf_error(error):
+    flash('Le formulaire a expiré ou est invalide. Veuillez réessayer.', 'danger')
+    return redirect(request.referrer or url_for('index'))
+
 # Lancement de l'application
 if __name__ == '__main__':
     with app.app_context():
@@ -278,4 +329,4 @@ if __name__ == '__main__':
             p = Produit(stock=100)
             db.session.add(p)
             db.session.commit()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

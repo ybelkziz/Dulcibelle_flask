@@ -22,25 +22,47 @@
         </div>
 
     <!-- Navigation simple -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-2">
     <div class="container">
-        <a class="navbar-brand fw-bold text-uppercase" href="{{ url_for('index') }}">Dulcibelle</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- Logo / Brand -->
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Dulcibelle" height="50" style="max-height: 50px; width: auto;">
+        </a>
+
+        <!-- Bouton hamburger pour mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
+                aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+        <!-- Contenu du menu (se replie sur mobile) -->
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'produit' %}active{% endif %}" href="{{ url_for('produit') }}">Notre produit</a>
+                    <a class="nav-link {% if active_page == 'produit' %}active{% endif %}"
+                       href="{{ url_for('produit') }}">Notre produit</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'histoire' %}active{% endif %}" href="{{ url_for('histoire') }}">Notre histoire</a>
+                    <a class="nav-link {% if active_page == 'histoire' %}active{% endif %}"
+                       href="{{ url_for('histoire') }}">Notre histoire</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if active_page == 'contact' %}active{% endif %}" href="{{ url_for('contact') }}">Contact</a>
+                    <a class="nav-link {% if active_page == 'faq' %}active{% endif %}"
+                       href="{{ url_for('faq') }}">FAQ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'cgv' %}active{% endif %}"
+                       href="{{ url_for('cgv') }}">CGV</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if active_page == 'contact' %}active{% endif %}"
+                       href="{{ url_for('contact') }}">Contactez-nous</a>
                 </li>
             </ul>
-            <a href="{{ url_for('commander_page') }}" class="btn btn-outline-light ms-lg-3">Commander</a>
+            <!-- Bouton CTA permanent (visible même sur mobile) -->
+            <a href="{{ url_for('commander_page') }}" class="btn btn-outline-light ms-lg-3 mt-2 mt-lg-0">
+                <i class="bi bi-cart-check me-1"></i> Commander
+            </a>
         </div>
     </div>
 </nav>

@@ -27,6 +27,7 @@
 
     <h3>Changer le statut</h3>
     <form method="POST" action="{{ url_for('admin_changer_statut', id=commande.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="mb-3">
             <select name="statut" class="form-select">
                 <option value="en attente" {% if commande.statut == 'en attente' %}selected{% endif %}>En attente</option>
